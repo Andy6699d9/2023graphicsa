@@ -1,11 +1,11 @@
 ///week12-5_TRT_keyboard_mouse 要用 keyboard mouse 來操控
 #include <stdio.h>
 #include <GL/glut.h>
-#include "glm.h" ///week13 step02-1
-GLMmodel * head = NULL; ///week13 step02-1
-GLMmodel * body = NULL; ///week13 step02-1
-GLMmodel * uparmR = NULL; ///week13 step02-1
-GLMmodel * lowarmR = NULL; ///week13 step02-1
+#include "glm.h"
+GLMmodel * head = NULL;
+GLMmodel * body = NULL;
+GLMmodel * uparmR = NULL;
+GLMmodel * lowarmR = NULL;
 int show[4] = {1, 1, 1, 1};
 int ID = 0;
 void keyboard(unsigned char key, int x, int y) {
@@ -23,12 +23,12 @@ void display()
 {
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     glPushMatrix();
-        glScalef(0.2, 0.2, 0.2); ///week13_step02-2
-        if(body==NULL){///week13 step02-1
+        glScalef(0.2, 0.2, 0.2);
+        if(body==NULL){
             head = glmReadOBJ("model/head.obj");
-            body = glmReadOBJ("model/body.obj");///week13 step02-1
-            uparmR = glmReadOBJ("model/uparmR.obj");///Week13 step03-1
-            lowarmR = glmReadOBJ("model/lowarmR.obj");///Week13 step03-1
+            body = glmReadOBJ("model/body.obj");
+            uparmR = glmReadOBJ("model/uparmR.obj");
+            lowarmR = glmReadOBJ("model/lowarmR.obj");
             ///glmUnitize(body); ///week13 step02-1 這行之後會改
         }
         if(ID==0) glColor3f(1,0,0);
@@ -40,7 +40,9 @@ void display()
         if(show[1]) glmDraw(body, GLM_MATERIAL);
 
         glPushMatrix();
-            glTranslatef(teapotX, teapotY, 0);
+            glTranslatef(-1.200000, +0.453333, 0);
+            glRotatef(angle, 0, 0, 1);
+            glTranslatef(1.200000, -0.453333, 0);
 
             if(ID==2) glColor3f(1,0,0);
             else glColor3f(1,1,1);
@@ -51,17 +53,20 @@ void display()
         else glColor3f(1,1,1);
         if(show[3]) glmDraw(lowarmR, GLM_MATERIAL);
     glPopMatrix();
+    glColor3f(0, 1, 0);
+    glutSolidTeapot( 0.02 );
     glutSwapBuffers();
 }
-int oldX = 0, oldY = 0; ///Week13 step03-2
-void motion(int x, int y){ ///Week13 step03-2
-    teapotX += (x - oldX)/150.0; ///Week13 step03-2
-    teapotY -= (y - oldY)/150.0; ///Week13 step03-2
+int oldX = 0, oldY = 0;
+void motion(int x, int y){
+    teapotX += (x - oldX)/150.0;
+    teapotY -= (y - oldY)/150.0;
     oldX = x;
     oldY = y;
+    angle = x;
     printf("glTranslatef(%f, %f, 0);\n", teapotX, teapotY);
-    glutPostRedisplay(); ///Week13 step03-2
-} ///Week13 step03-2
+    glutPostRedisplay();
+}
 void mouse(int button, int state, int x, int y)
 {
     if(state==GLUT_DOWN){
