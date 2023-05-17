@@ -6,12 +6,13 @@ GLMmodel * head = NULL; ///week13 step02-1
 GLMmodel * body = NULL; ///week13 step02-1
 GLMmodel * uparmR = NULL; ///week13 step02-1
 GLMmodel * lowarmR = NULL; ///week13 step02-1
-int show[4] = {0, 1, 0, 0};/// week13 step03-1 用 show[i] 來決定要不要顯示
-void keyboard(unsigned char key, int x, int y) {/// week13 step03-1
-    if(key=='0') show[0] = !show[0];/// week13 step03-1
-    if(key=='1') show[1] = !show[1];/// week13 step03-1
-    if(key=='2') show[2] = !show[2];/// week13 step03-1
-    if(key=='3') show[3] = !show[3];/// week13 step03-1
+int show[4] = {1, 1, 1, 1};
+int ID = 0;
+void keyboard(unsigned char key, int x, int y) {
+    if(key=='0') ID =0;
+    if(key=='1') ID =1;
+    if(key=='2') ID =2;
+    if(key=='3') ID =3;
     glutPostRedisplay();
 } ///原來的keyboard先註解、不要用
 FILE * fout = NULL; ///step02-2 一開始,檔案沒有開, NULL
@@ -30,16 +31,25 @@ void display()
             lowarmR = glmReadOBJ("model/lowarmR.obj");///Week13 step03-1
             ///glmUnitize(body); ///week13 step02-1 這行之後會改
         }
-        glColor3f(1,0,0);
-        if(show[0]) glmDraw(head, GLM_MATERIAL);///Week13 step03-1
-        glColor3f(0,1,0);
-        if(show[1]) glmDraw(body, GLM_MATERIAL);///week13 step02-1這行之後會改
+        if(ID==0) glColor3f(1,0,0);
+        else glColor3f(1,1,1);
+        if(show[0]) glmDraw(head, GLM_MATERIAL);
+
+        if(ID==1) glColor3f(1,0,0);
+        else glColor3f(1,1,1);
+        if(show[1]) glmDraw(body, GLM_MATERIAL);
+
         glPushMatrix();
             glTranslatef(teapotX, teapotY, 0);
 
-            if(show[2]) glmDraw(uparmR, GLM_MATERIAL);///Week13 step03-1
+            if(ID==2) glColor3f(1,0,0);
+            else glColor3f(1,1,1);
+            if(show[2]) glmDraw(uparmR, GLM_MATERIAL);
         glPopMatrix();
-        if(show[3]) glmDraw(lowarmR, GLM_MATERIAL);///Week13 step03-1
+
+        if(ID==3) glColor3f(1,0,0);
+        else glColor3f(1,1,1);
+        if(show[3]) glmDraw(lowarmR, GLM_MATERIAL);
     glPopMatrix();
     glutSwapBuffers();
 }
